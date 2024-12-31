@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHATBOX</title>
+    <link rel="stylesheet" href="cd.css">                                                                                                                                              
+</head>
+<body>
+                                                                                                                                                                                                                                                                                                          
+    <div class="chatbox">
+        <div class="chat-header">
+            <img src="img/dpadi.jpg" alt="Author">
+            <h4>Aditya_kumar</h4>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="input-container">
+            <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="sendMessage(event)">
+            <button class="send-btn" onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to send a message
+        function sendMessage(event) {
+            if (event && event.key !== "Enter" && event.type === "keypress") return;
+
+            let messageInput = document.getElementById("chatInput");
+            let messageText = messageInput.value.trim();
+
+            if (messageText) {
+                // User message
+                let userMessageElement = document.createElement("p");
+                userMessageElement.textContent = messageText;
+                userMessageElement.classList.add("user");
+                document.getElementById("chatMessages").appendChild(userMessageElement);
+
+                // Clear input and focus back to it
+                messageInput.value = "";
+                messageInput.focus();
+
+                // Scroll to the bottom of the messages
+                scrollToBottom();
+
+                // Auto-reply after a short delay
+                setTimeout(() => {
+                    let botMessageElement = document.createElement("p");
+                    botMessageElement.textContent = "" + autoReply(messageText);
+                    botMessageElement.classList.add("bot");
+                    document.getElementById("chatMessages").appendChild(botMessageElement);
+
+                    scrollToBottom();
+                }, 1000);
+            }
+        }
+
+        // Function to generate an auto-reply based on user input
+        function autoReply(message) {
+            const replies = {
+                "hi": "Hello! How can I help you?",
+                "how are you": "I'm good, thanks for asking! How can I assist you today?",
+                "bye": "Goodbye! Have a great day!",
+                "default": "Sorry, I didn't understand that. Can you please rephrase?"
+            };
+
+            message = message.toLowerCase();
+            return replies[message] || replies["default"];
+        }
+
+        // Function to scroll the chat to the bottom
+        function scrollToBottom() {
+            const chatMessages = document.getElementById("chatMessages");
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+
+</body>
+</html>
